@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Boohong:wght@400&display=swap">
+    <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Web Portfolio</title>
+    <style>
+        body {
+            font-family: 'Boohong', sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            overflow-x: hidden
+        }
+
+        nav {
+            position: relative;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 99;
+            /* set z-index yang lebih tinggi dari sidebar */
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .nav-link:hover,
+        .active-link {
+            opacity: 0.7;
+        }
+
+        .active-link::after {
+            content: '';
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: black;
+            margin-top: 2px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px;
+            /* sidebar initially hidden */
+            width: 250px;
+            height: 100%;
+            background-color: #f4f4f4;
+            overflow-x: hidden;
+            transition: 0.5s;
+            z-index: 98;
+            /* set z-index yang lebih rendah dari navbar dan gambar navbar */
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .sidebar ul li a:hover {
+            opacity: 0.7;
+        }
+
+        .show-sidebar {
+            left: 0;
+            /* show sidebar */
+        }
+
+        /* Tambahkan gaya untuk gambar di navbar */
+        .navbar-img {
+            cursor: pointer;
+        }
+
+        /* Animasi untuk perpindahan gambar dari navbar ke sidebar */
+        @keyframes moveImageToSidebar {
+            0% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(-250px);
+                /* Sesuaikan dengan lebar sidebar */
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        /* Terapkan animasi ke gambar ketika ditampilkan di sidebar */
+        .sidebar.show-sidebar .navbar-img {
+            animation: moveImageToSidebar 0.5s forwards;
+        }
+
+        /* Animation for text */
+        @keyframes slideFromLeft {
+            0% {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Animation for image */
+        @keyframes slideFromRight {
+            0% {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Apply animation to elements */
+        .text-animation {
+            animation: slideFromLeft 1s ease-in-out;
+        }
+
+        .image-animation {
+            animation: slideFromRight 1s ease-in-out;
+        }
+
+        /* Background overlay for sidebar */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Warna latar belakang semi-transparan */
+            z-index: 97;
+            /* Z-index yang lebih tinggi dari konten utama, tetapi lebih rendah dari sidebar */
+            display: none;
+            /* Awalnya disembunyikan */
+        }
+
+        /* Tampilkan overlay saat sidebar ditampilkan */
+        .sidebar.show-sidebar+.sidebar-overlay {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100" onload="animateDashboard()">
+    <nav
+        class="w-full h-16 bg-transparent backdrop-blur-md shadow-md flex items-center justify-between px-6 fixed top-0 z-50 navbar">
+        <img src="src/img/radena.png" alt="foto-error" onclick="toggleSidebar()"
+            class="w-[150px] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300 navbar-img">
+        <ul class="flex gap-7">
+            <li>
+                <a href="#" class="nav-link" onclick="scrollToSection('dashboard')">Home</a>
+            </li>
+            <li>
+                <a href="#about" class="nav-link" onclick="scrollToSection('about')">About</a>
+            </li>
+            <li>
+                <a href="#sertifikat" class="nav-link" onclick="scrollToSection('sertifikat')">Certificate</a>
+            </li>
+            <li>
+                <a href="#project" class="nav-link" onclick="scrollToSection('project')">Project</a>
+            </li>
+        </ul>
+    </nav>
+    <div id="sidebar" class="sidebar flex flex-col">
+        <div class="flex flex-col items-center mt-2">
+            <img src="src/img/about.jpg" alt="gambar-profil" class="w-24 h-24 rounded-full mb-1">
+            <span class="text-sm font-bold">Radenagil</span>
+        </div>
+        <hr border="6">
+        <ul>
+            <li><a href="#" onclick="scrollToSection('dashboard')">Home</a></li>
+            <li><a href="#about" onclick="scrollToSection('about')">About</a></li>
+            <li><a href="#sertifikat" onclick="scrollToSection('sertifikat')">Certificate</a></li>
+            <li><a href="#project" onclick="scrollToSection('project')">Project</a></li>
+        </ul>
+        <hr border="6">
+        <button class="font-bold py-2 px-4 rounded" onclick="closeSidebar()">
+            <i class="fa-solid fa-xmark text-black fa-2x hover:text-red-600 "></i>
+        </button>
+    </div>
+
+
+    <!-- Background overlay for sidebar -->
+    <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+    <main>
+        <!-- Dashboard -->
+        <div class="flex flex-row pl-[200px] items-center" id="dashboard">
+            <div class="flex-auto w-64 mt-12 text-left pr-8 text-animation">
+                <div class="flex flex-col">
+                    <h1 class="text-[48px] font-bold mt-[-8px] font-serif">Hello,</h1>
+                    <p class="text-[48px] bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-blue-600 font-bold mt-[-4px]">Radenagil's Here</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-2">
+                    <a href="#" class="text-blue-700 hover:text-blue-500 transition duration-300" title="GitHub"><i
+                            class="fab fa-github fa-2x"></i></a>
+                    <a href="#" class="text-pink-700 hover:text-pink-500 transition duration-300" title="Instagram"><i
+                            class="fab fa-instagram fa-2x"></i></a>
+                    <a href="#" class="text-blue-500 hover:text-blue-300 transition duration-300" title="LinkedIn"><i
+                            class="fab fa-linkedin fa-2x"></i></a>
+                </div>
+            </div>
+
+
+            <div class="flex flex-row image-animation">
+                <img src="src/img/logo.png" alt="foto-error"
+                    class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300">
+            </div>
+        </div>
+
+        <!-- Cards section -->
+        <div class="flex justify-center mt-[100px]">
+            <div class="flex flex-col items-center bg-white shadow-lg rounded-lg p-6 w-64" data-aos="zoom-in">
+                <i class="fab fa-chrome text-blue-700 fa-2x mb-2"></i>
+                <h2 class="text-lg font-semibold text-center">Web Development</h2>
+                <p>Since 2023</p>
+            </div>
+
+            <div class="flex flex-col items-center bg-white shadow-lg rounded-lg p-6 w-64 ml-6" data-aos="zoom-in"
+                data-aos-easing="linear" data-aos-duration="1000">
+                <i class="fas fa-gear fa-2x mb-2"></i>
+                <h2 class="text-lg font-semibold text-center">Internet Of Things</h2>
+                <p>Since 2022</p>
+            </div>
+
+            <div class="flex flex-col items-center bg-white shadow-lg rounded-lg p-6 w-64 ml-6" data-aos="zoom-in"
+                data-aos-easing="linear" data-aos-duration="1500">
+                <i class="fas fa-print text-green-500 fa-2x mb-2"></i>
+                <h2 class="text-lg font-semibold text-center">Data Science</h2>
+                <p>Since 2024</p>
+            </div>
+        </div>
+        <div id="about"></div>
+        <!-- About -->
+        <div class="mt-[100px] pl-[200px] flex flex-row items-center">
+            <div class="flex items-center">
+                <div class="flex flex-col" data-aos="flip-left" data-aos-easing="linear" data-aos-duration="1000">
+                    <i class="fa-solid fa-address-card fa-5x text-cyan-500"></i>
+                </div>
+                <div class="flex flex-col ml-5">
+                    <h2
+                        class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-400 font-semibold text-4xl">
+                        About</h2>
+                    <p class="font-bold">My Personal Info</p>
+                </div>
+            </div>
+        </div>
+        <div class="flex pl-[200px] mt-3 w-full">
+            <img src="src/img/about.jpg" class="h-[350px] w-[350px] rounded-xl hover:opacity-30 duration-300"
+                alt="foto-error" data-aos="fade-right" data-aos-easing="linear" data-aos-duration="1500">
+            <div class="ml-5" data-aos="fade-left" data-aos-easing="linear" data-aos-duration="1500">
+                <h1 class="text-[32px] font-bold"><span
+                        class="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-400 font-semibold text-3xl">R.B.
+                        Abdullah Agil</span></h1>
+                <p class="text-[18px] text-justify">I am a student of Politeknik Elektronika Negeri Surabaya (PENS).
+                    <br> I started learning to be a programmer since 2021. From 2021 I <br> have learned Front-end &
+                    Back-end Web Developer, Internet <br> Of Things ( IoT ), Data Science. I have an enthusiasm to
+                    study
+                    <br> and work in this field.
+                </p>
+            </div>
+        </div>
+        <!-- Skills -->
+        <div class="mt-[100px] pl-[200px] flex flex-row items-center">
+            <div class="flex items-center">
+                <div class="flex flex-col" data-aos="flip-left" data-aos-easing="linear" data-aos-duration="1000">
+                    <i class="fa-solid fa-fire fa-5x text-rose-600"></i>
+                </div>
+                <div class="flex flex-col ml-5">
+                    <h2
+                        class="bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-rose-600 font-semibold text-4xl">
+                        Skills</h2>
+                    <p class="font-bold">My Coding Skills</p>
+                </div>
+            </div>
+        </div>
+        <!-- Contact -->
+    </main>
+    <footer class="w-full bg-black text-white py-4 text-center">
+        <span class="text-md font-bold italic">RADENA</span>
+        <div class="flex items-center justify-center mt-2">
+            <a href="#" class="text-white mx-2" title="GitHub"><i class="fab fa-github"></i></a>
+            <a href="#" class="text-white mx-2" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-white mx-2" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        </div>
+        <span class="text-md font-bold italic mt-2">@ Copyright By Radenagil</span>
+
+
+
+
+
+
+
+
+
+
+        <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+        <script>
+            AOS.init();
+
+            // Function to handle smooth scrolling and update active link
+            function scrollToSection(target) {
+                const section = document.getElementById(target);
+                window.scrollTo({
+                    top: section.offsetTop - document.querySelector('.nav-link').offsetHeight,
+                    behavior: 'smooth'
+                });
+
+                updateActiveLink(target);
+            }
+
+            function toggleSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.toggle('show-sidebar');
+            }
+
+            function closeSidebar() {
+                const sidebar = document.getElementById('sidebar');
+                sidebar.classList.remove('show-sidebar');
+            }
+
+            // Function to update the active link
+            function updateActiveLink(target) {
+                const links = document.querySelectorAll('.nav-link');
+                links.forEach(link => link.classList.remove('active-link'));
+                document.querySelector(`[onclick="scrollToSection('${target}')"]`).classList.add('active-link');
+            }
+
+            // Function to trigger animations on dashboard section
+            function animateDashboard() {
+                const textSection = document.querySelector('.text-animation');
+                const imageSection = document.querySelector('.image-animation');
+                textSection.classList.add('text-animation');
+                imageSection.classList.add('image-animation');
+            }
+
+
+            // Function to handle scroll events and update active link accordingly
+            document.addEventListener('scroll', function () {
+                const sections = ['home', 'dashboard', 'about', 'sertifikat', 'project'];
+                let currentSection = 'home';
+
+                sections.forEach(section => {
+                    const element = document.getElementById(section);
+                    if (element.offsetTop <= window.scrollY + document.querySelector('.nav-link').offsetHeight) {
+                        currentSection = section;
+                    }
+                });
+
+                updateActiveLink(currentSection);
+            });
+        </script>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,46 @@
+<main>
+        <!-- Dashboard -->
+        <div class="flex mt-[100px] pl-[200px]" id="dashboard">
+            <div class="flex-auto w-64 mt-[60px]">
+                <h1 class="text-[32px] font-bold">Hello, <br><span
+                        class="text-[32px] text-blue-700 font-bold">Radenagil's </span>Here</h1>
+                <a href=""><i class="fa-brands fa-github fa-xl mt-2 mx-2"></i></a>
+                <a href=""><i class="fa-brands fa-instagram fa-xl mt-2 mx-4"></i></a>
+                <a href=""><i class="fa-brands fa-linkedin fa-xl mx-2"></i></a>
+            </div>
+            <div class="flex-auto w-24">
+                <img src="foto-saya.png" alt="foto-error"
+                    class="w-[300px] transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300">
+            </div>
+        </div>
+        <!-- About -->
+        <div class="mt-[100px]">
+            <h1 class="text-center font-extrabold text-blue-700 text-[32px] underline" id="about">About</h1>
+        </div>
+        <div class="flex pl-[200px]">
+            <div class="flex-auto w-64 mt-[60px]">
+                <img src="foto-asli.jpg" class="h-[300px] w-[300px]" alt="foto-error"
+                    class="w-[300px] hover:opacity-30 duration-300">
+            </div>
+            <div class="flex-auto mt-[60px]">
+                <h1 class="text-[32px] font-bold"><span class="text-[24px] text-blue-700 font-bold">R.B. Abdullah Agil
+                    </span></h1>
+                <p class="text-[18px]">Saya Adalah Siswa SMKN 9 Semarang Jurusan Rekayasa Perangkat Lunak</span></p>
+            </div>
+        </div>
+        <!-- Project -->
+        <div class="mt-[100px]">
+            <h1 class="text-center font-extrabold text-blue-700 text-[32px] underline" id="sertifikat">Sertifikat</h1>
+        </div>
+        <div class="grid grid-cols-2 gap-4 flex px-[200px] mt-2 mx-auto">
+            <div>
+                <img src="crocodic.png" alt="foto-error"
+                    class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300">
+            </div>
+            <div>
+                <img src="unnes.png" alt="foto-error"
+                    class="transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 hover:duration-300">
+            </div>
+        </div>
+        <!-- Contact -->
+    </main>
